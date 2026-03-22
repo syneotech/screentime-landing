@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ScreenTime terms of service.">
+  <meta name="robots" content="noindex">
+  <title>Terms of Service — ScreenTime</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark:       #102219;
+      --bg-card:       #162E22;
+      --bg-surface:    #1A3326;
+      --primary:       #13EC80;
+      --primary-muted: rgba(19, 236, 128, 0.12);
+      --text-primary:  #FFFFFF;
+      --text-secondary:#8FA89B;
+      --text-muted:    #5A7066;
+      --radius-lg:     16px;
+      --font:          'Space Grotesk', system-ui, sans-serif;
+      --max-width:     1100px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      font-family: var(--font);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a { color: inherit; text-decoration: none; }
+    a:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; border-radius: 4px; }
+
+    /* HEADER */
+    header {
+      border-bottom: 1px solid rgba(19, 236, 128, 0.08);
+    }
+    .header-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 16px 24px;
+    }
+    .wordmark {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+    .wordmark-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--primary);
+      flex-shrink: 0;
+    }
+
+    /* MAIN */
+    main { flex: 1; padding: 80px 24px; }
+    .legal-container {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .eyebrow {
+      display: inline-block;
+      background: var(--bg-surface);
+      color: var(--text-secondary);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 9999px;
+      margin-bottom: 16px;
+    }
+    .legal-container h1 {
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+    .legal-updated {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-bottom: 40px;
+    }
+    .coming-soon-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(19, 236, 128, 0.1);
+      padding: 48px 40px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .coming-soon-card p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      line-height: 1.6;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    .coming-soon-card a {
+      color: var(--primary);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .coming-soon-card a:hover { opacity: 0.85; }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid rgba(19, 236, 128, 0.08);
+      padding: 36px 24px;
+    }
+    .footer-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .footer-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+    .footer-links a {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      transition: color 150ms ease;
+    }
+    .footer-links a:hover { color: var(--primary); }
+    .footer-copy {
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      text-align: center;
+    }
+    @media (max-width: 768px) {
+      .coming-soon-card { padding: 32px 24px; }
+      .footer-top { flex-direction: column; align-items: center; text-align: center; }
+      .footer-links { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <a href="/" class="wordmark" aria-label="ScreenTime home">
+        <div class="wordmark-dot" aria-hidden="true"></div>
+        ScreenTime
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <div class="legal-container">
+      <span class="eyebrow">Legal</span>
+      <h1>Terms of Service</h1>
+      <p class="legal-updated">Last updated: Coming soon</p>
+
+      <div class="coming-soon-card">
+        <p>Our Terms of Service are being prepared and will be published here before the app launches.</p>
+        <p>ScreenTime is built to be straightforward — no hidden clauses, no surprising data practices.</p>
+        <p>Questions? Email us at <a href="mailto:legal@syneo.tech">legal@syneo.tech</a></p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <a href="/" class="wordmark" aria-label="ScreenTime home">
+          <div class="wordmark-dot" aria-hidden="true"></div>
+          ScreenTime
+        </a>
+        <nav class="footer-links" aria-label="Footer">
+          <a href="/privacy-policy">Privacy Policy</a>
+          <a href="/tos">Terms of Service</a>
+        </nav>
+      </div>
+      <p class="footer-copy">&copy; 2026 ScreenTime by Syneo Tech</p>
+    </div>
+  </footer>
+
+</body>
+</html>
