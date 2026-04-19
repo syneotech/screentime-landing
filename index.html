@@ -104,6 +104,20 @@
     .btn-primary:active { transform: scale(0.98); }
     .header-cta { /* hidden on mobile */ }
 
+    /* Header nav */
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+    .header-nav a {
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+      font-weight: 500;
+      transition: color 150ms ease;
+    }
+    .header-nav a:hover { color: var(--primary); }
+
     /* ─── HERO ─── */
     .hero {
       min-height: 100vh;
@@ -207,66 +221,135 @@
       font-weight: 500;
       letter-spacing: 0.02em;
     }
-    /* App mockup */
-    .app-mockup {
-      margin-top: 16px;
-      background: var(--bg-card);
-      border-radius: var(--radius-xl);
-      border: 1px solid rgba(19, 236, 128, 0.12);
-      padding: 20px;
-      width: 100%;
-      max-width: 320px;
-      box-shadow: var(--shadow-glow);
-    }
-    .mockup-time-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--primary-muted);
-      color: var(--primary);
-      font-size: 0.72rem;
-      font-weight: 600;
-      padding: 5px 12px;
-      border-radius: 9999px;
-      margin-bottom: 16px;
-    }
-    .mockup-time-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--primary);
-    }
-    .mockup-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-    .mockup-card {
-      background: var(--bg-surface);
-      border-radius: var(--radius-md);
-      aspect-ratio: 4 / 5;
+    /* Screenshots carousel (hero) */
+    .screenshots-carousel {
       position: relative;
+      margin-top: 16px;
+      width: 100%;
+      max-width: 280px;
+      outline: none;
+    }
+    .screenshots-carousel:focus-visible { outline: none; }
+    .phone-frame {
+      position: relative;
+      background: var(--bg-card);
+      border-radius: 42px;
+      border: 1.5px solid rgba(19, 236, 128, 0.18);
+      padding: 10px;
+      box-shadow: var(--shadow-glow), 0 20px 40px rgba(0,0,0,0.3);
+    }
+    .phone-screen {
+      position: relative;
+      border-radius: 32px;
+      background: var(--bg-surface);
+      overflow: hidden;
+      aspect-ratio: 9 / 19.5;
+    }
+    .phone-notch {
+      position: absolute;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 78px;
+      height: 20px;
+      background: var(--bg-dark);
+      border-radius: 9999px;
+      z-index: 3;
+      pointer-events: none;
+    }
+    .carousel-viewport {
+      overflow: hidden;
+      height: 100%;
+      position: relative;
+    }
+    .carousel-track {
+      display: flex;
+      height: 100%;
+      transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform;
+    }
+    .slide {
+      position: relative;
+      flex: 0 0 100%;
+      height: 100%;
+      background: var(--bg-surface);
       overflow: hidden;
     }
-    .mockup-card::after {
-      content: '';
+    .slide::before {
+      content: attr(data-label);
       position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 40%;
-      background: linear-gradient(to top, rgba(16,34,25,0.7), transparent);
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      font-weight: 500;
+      padding: 24px;
+      text-align: center;
+      z-index: 0;
     }
-    .mockup-card-bar {
-      position: absolute;
-      bottom: 8px; left: 8px; right: 8px;
-      height: 6px;
-      border-radius: 9999px;
-      background: rgba(255,255,255,0.1);
+    .slide img {
+      position: relative;
       z-index: 1;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
-    /* Color tints for the fake thumbnails */
-    .mockup-card:nth-child(1) { background: #1E3D2D; }
-    .mockup-card:nth-child(2) { background: #1B3530; }
-    .mockup-card:nth-child(3) { background: #1A3228; }
-    .mockup-card:nth-child(4) { background: #1D3A2C; }
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 20px;
+    }
+    .carousel-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(19, 236, 128, 0.2);
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      transition: background 150ms ease, transform 150ms ease;
+    }
+    .carousel-dot.active {
+      background: var(--primary);
+      transform: scale(1.25);
+    }
+    .carousel-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(16, 34, 25, 0.85);
+      border: 1px solid rgba(19, 236, 128, 0.25);
+      color: var(--primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+      transition: background 150ms ease, opacity 150ms ease;
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+    }
+    .carousel-arrow:hover { background: rgba(19, 236, 128, 0.15); }
+    .carousel-arrow:active { transform: translateY(-50%) scale(0.95); }
+    .carousel-arrow[disabled] { opacity: 0.3; cursor: not-allowed; }
+    .carousel-arrow.prev { left: -20px; }
+    .carousel-arrow.next { right: -20px; }
+    .carousel-arrow svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
 
     /* ─── SECTION SHARED ─── */
     section {
@@ -502,6 +585,88 @@
       font-weight: 600;
     }
 
+    /* Notify form (Plus tier waitlist) */
+    .notify-container { margin-top: 14px; }
+    .notify-container > * { display: none; }
+    .notify-container[data-state="idle"] .btn-notify { display: inline-flex; }
+    .notify-container[data-state="open"] .notify-form,
+    .notify-container[data-state="submitting"] .notify-form,
+    .notify-container[data-state="error"] .notify-form { display: flex; }
+    .notify-container[data-state="success"] .notify-success { display: block; }
+    .notify-container[data-state="error"] .notify-error { display: block; }
+    .btn-notify {
+      align-items: center;
+      gap: 6px;
+      background: transparent;
+      color: var(--primary);
+      font-family: var(--font);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 9px 18px;
+      border-radius: 9999px;
+      border: 1.5px solid rgba(19, 236, 128, 0.4);
+      cursor: pointer;
+      transition: border-color 150ms ease, background 150ms ease;
+    }
+    .btn-notify:hover {
+      border-color: var(--primary);
+      background: var(--primary-muted);
+    }
+    .notify-form {
+      gap: 8px;
+      align-items: stretch;
+    }
+    .notify-form input[type="email"] {
+      flex: 1;
+      min-width: 0;
+      background: var(--bg-dark);
+      border: 1px solid rgba(19, 236, 128, 0.2);
+      color: var(--text-primary);
+      font-family: var(--font);
+      font-size: 0.9rem;
+      padding: 10px 14px;
+      border-radius: 9999px;
+      outline: none;
+      transition: border-color 150ms ease;
+    }
+    .notify-form input[type="email"]:focus { border-color: var(--primary); }
+    .notify-form input[type="email"]::placeholder { color: var(--text-muted); }
+    .notify-form button {
+      background: var(--primary);
+      color: var(--btn-text);
+      font-family: var(--font);
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 10px 16px;
+      border-radius: 9999px;
+      border: none;
+      cursor: pointer;
+      transition: background 150ms ease;
+      white-space: nowrap;
+    }
+    .notify-form button:hover { background: var(--primary-dark); }
+    .notify-form button[disabled] { opacity: 0.6; cursor: wait; }
+    .notify-success, .notify-error {
+      font-size: 0.85rem;
+      margin: 0;
+      padding: 6px 0;
+    }
+    .notify-success { color: var(--primary); font-weight: 600; }
+    .notify-error { color: #ff8a8a; margin-top: 6px; }
+
+    /* Muted pricing li ("And many more") */
+    .pricing-features li.li-muted {
+      color: var(--text-muted);
+      font-style: italic;
+    }
+    .pricing-features li .no-icon {
+      display: inline-block;
+      flex-shrink: 0;
+      width: 16px;
+      height: 16px;
+      margin-top: 2px;
+    }
+
     /* ─── FINAL CTA ─── */
     .final-cta {
       text-align: center;
@@ -568,6 +733,8 @@
     /* ─── RESPONSIVE ─── */
     @media (max-width: 768px) {
       .header-cta { display: none; }
+      .header-nav { display: none; }
+      .carousel-arrow { display: none; }
       .features-grid { grid-template-columns: 1fr; }
       .pricing-grid { grid-template-columns: 1fr; }
       .hero-cta-row { flex-direction: column; align-items: center; }
@@ -589,6 +756,12 @@
         <div class="wordmark-dot" aria-hidden="true"></div>
         ScreenTime
       </a>
+      <nav class="header-nav" aria-label="Primary">
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="#screenshots">Screenshots</a>
+        <a href="#pricing">Pricing</a>
+      </nav>
       <a href="#" class="btn-primary header-cta">Download for Android</a>
     </div>
   </header>
@@ -618,17 +791,40 @@
 
         <p class="hero-trust">Free to download &nbsp;·&nbsp; Android &nbsp;·&nbsp; iOS coming soon</p>
 
-        <!-- App mockup -->
-        <div class="app-mockup" aria-hidden="true" role="presentation">
-          <div class="mockup-time-pill">
-            <div class="mockup-time-dot"></div>
-            45 min left today
+        <!-- Screenshots carousel -->
+        <div class="screenshots-carousel" id="screenshots" tabindex="0" role="region" aria-roledescription="carousel" aria-label="App screenshots">
+          <div class="phone-frame">
+            <div class="phone-notch" aria-hidden="true"></div>
+            <div class="phone-screen">
+              <div class="carousel-viewport">
+                <div class="carousel-track">
+                  <div class="slide" data-label="Approved catalog" role="group" aria-roledescription="slide" aria-label="Approved catalog (1 of 4)">
+                    <img src="screenshots/01-catalog.png" alt="" onerror="this.remove()">
+                  </div>
+                  <div class="slide" data-label="Daily time limits" role="group" aria-roledescription="slide" aria-label="Daily time limits (2 of 4)">
+                    <img src="screenshots/02-time-limits.png" alt="" onerror="this.remove()">
+                  </div>
+                  <div class="slide" data-label="Activity log" role="group" aria-roledescription="slide" aria-label="Activity log (3 of 4)">
+                    <img src="screenshots/03-activity.png" alt="" onerror="this.remove()">
+                  </div>
+                  <div class="slide" data-label="Kids mode" role="group" aria-roledescription="slide" aria-label="Kids mode (4 of 4)">
+                    <img src="screenshots/04-kids-mode.png" alt="" onerror="this.remove()">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button type="button" class="carousel-arrow prev" aria-label="Previous screenshot">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <button type="button" class="carousel-arrow next" aria-label="Next screenshot">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
           </div>
-          <div class="mockup-grid">
-            <div class="mockup-card"><div class="mockup-card-bar"></div></div>
-            <div class="mockup-card"><div class="mockup-card-bar"></div></div>
-            <div class="mockup-card"><div class="mockup-card-bar"></div></div>
-            <div class="mockup-card"><div class="mockup-card-bar"></div></div>
+          <div class="carousel-dots" role="tablist" aria-label="Screenshot navigation">
+            <button type="button" class="carousel-dot active" role="tab" aria-label="Screenshot 1" aria-selected="true"></button>
+            <button type="button" class="carousel-dot" role="tab" aria-label="Screenshot 2" aria-selected="false"></button>
+            <button type="button" class="carousel-dot" role="tab" aria-label="Screenshot 3" aria-selected="false"></button>
+            <button type="button" class="carousel-dot" role="tab" aria-label="Screenshot 4" aria-selected="false"></button>
           </div>
         </div>
       </div>
@@ -786,6 +982,15 @@
               <div class="pricing-badge coming-soon">Coming soon</div>
               <h3>Plus</h3>
               <div class="pricing-price">$7.99 <span>/ month</span></div>
+              <div class="notify-container" data-state="idle">
+                <button type="button" class="btn-notify">Get notified when it launches →</button>
+                <form class="notify-form" novalidate>
+                  <input type="email" name="email" placeholder="you@example.com" required aria-label="Your email address" autocomplete="email">
+                  <button type="submit">Notify me</button>
+                </form>
+                <p class="notify-success" role="status">Thanks! We'll email you when Plus launches.</p>
+                <p class="notify-error" role="alert"></p>
+              </div>
             </div>
             <div class="pricing-card-body">
               <ul class="pricing-features">
@@ -808,6 +1013,10 @@
                 <li>
                   <svg class="check" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="2 8 6 12 14 4"/></svg>
                   <div><strong>Parent video uploads</strong> (500MB/video)</div>
+                </li>
+                <li class="li-muted">
+                  <span class="no-icon" aria-hidden="true"></span>
+                  <div>And many more</div>
                 </li>
               </ul>
             </div>
@@ -845,17 +1054,141 @@
   </footer>
 
   <script>
-    document.querySelectorAll('a[href^="#"]').forEach(function(a) {
-      a.addEventListener('click', function(e) {
-        var href = a.getAttribute('href');
-        if (href === '#') return;
-        var target = document.querySelector(href);
-        if (target) {
-          e.preventDefault();
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
+    (function() {
+      // Smooth scroll for in-page anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+        a.addEventListener('click', function(e) {
+          var href = a.getAttribute('href');
+          if (href === '#') return;
+          var target = document.querySelector(href);
+          if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
       });
-    });
+
+      // Screenshots carousel
+      (function initCarousel() {
+        var carousel = document.getElementById('screenshots');
+        if (!carousel) return;
+        var track = carousel.querySelector('.carousel-track');
+        var slides = Array.prototype.slice.call(carousel.querySelectorAll('.slide'));
+        var dots = Array.prototype.slice.call(carousel.querySelectorAll('.carousel-dot'));
+        var prevBtn = carousel.querySelector('.carousel-arrow.prev');
+        var nextBtn = carousel.querySelector('.carousel-arrow.next');
+        var index = 0;
+
+        function render() {
+          track.style.transform = 'translateX(' + (-index * 100) + '%)';
+          dots.forEach(function(d, i) {
+            d.classList.toggle('active', i === index);
+            d.setAttribute('aria-selected', i === index ? 'true' : 'false');
+          });
+          if (prevBtn) prevBtn.toggleAttribute('disabled', index === 0);
+          if (nextBtn) nextBtn.toggleAttribute('disabled', index === slides.length - 1);
+        }
+        function goTo(i) {
+          index = Math.max(0, Math.min(slides.length - 1, i));
+          render();
+        }
+        if (prevBtn) prevBtn.addEventListener('click', function() { goTo(index - 1); });
+        if (nextBtn) nextBtn.addEventListener('click', function() { goTo(index + 1); });
+        dots.forEach(function(d, i) { d.addEventListener('click', function() { goTo(i); }); });
+
+        carousel.addEventListener('keydown', function(e) {
+          if (e.key === 'ArrowLeft')  { e.preventDefault(); goTo(index - 1); }
+          if (e.key === 'ArrowRight') { e.preventDefault(); goTo(index + 1); }
+        });
+
+        var startX = 0, deltaX = 0, dragging = false;
+        track.addEventListener('touchstart', function(e) {
+          startX = e.touches[0].clientX;
+          deltaX = 0;
+          dragging = true;
+          track.style.transition = 'none';
+        }, { passive: true });
+        track.addEventListener('touchmove', function(e) {
+          if (!dragging) return;
+          deltaX = e.touches[0].clientX - startX;
+          track.style.transform = 'translateX(calc(' + (-index * 100) + '% + ' + deltaX + 'px))';
+        }, { passive: true });
+        track.addEventListener('touchend', function() {
+          dragging = false;
+          track.style.transition = '';
+          if (Math.abs(deltaX) > 50) {
+            goTo(index + (deltaX < 0 ? 1 : -1));
+          } else {
+            render();
+          }
+          deltaX = 0;
+        });
+
+        render();
+      })();
+
+      // "Get notified" → Supabase signup_emails
+      (function initNotifyForm() {
+        var SUPABASE_URL = 'https://rdyatkaazxjukjqljucr.supabase.co';
+        var SUPABASE_KEY = 'sb_publishable_AnIx7GcG4nS14mz3og2cSg_1sNVTcen';
+        var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        var container = document.querySelector('.notify-container');
+        if (!container) return;
+        var openBtn = container.querySelector('.btn-notify');
+        var form = container.querySelector('.notify-form');
+        var input = form.querySelector('input[type="email"]');
+        var submitBtn = form.querySelector('button[type="submit"]');
+        var errorEl = container.querySelector('.notify-error');
+
+        openBtn.addEventListener('click', function() {
+          container.setAttribute('data-state', 'open');
+          setTimeout(function() { input.focus(); }, 10);
+        });
+
+        form.addEventListener('submit', function(e) {
+          e.preventDefault();
+          var email = (input.value || '').trim().toLowerCase();
+          if (!email || !EMAIL_RE.test(email)) {
+            errorEl.textContent = 'Please enter a valid email address.';
+            container.setAttribute('data-state', 'error');
+            return;
+          }
+          container.setAttribute('data-state', 'submitting');
+          submitBtn.disabled = true;
+
+          fetch(SUPABASE_URL + '/rest/v1/signup_emails', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'apikey': SUPABASE_KEY,
+              'Authorization': 'Bearer ' + SUPABASE_KEY,
+              'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify({ email: email, source: 'landing-plus-waitlist' })
+          }).then(function(res) {
+            if (res.ok) {
+              container.setAttribute('data-state', 'success');
+              return;
+            }
+            return res.json().then(function(body) {
+              // 23505 = unique_violation → already on the list; treat as success
+              if (body && body.code === '23505') {
+                container.setAttribute('data-state', 'success');
+                return;
+              }
+              throw new Error((body && body.message) || 'Request failed');
+            });
+          }).catch(function(err) {
+            errorEl.textContent = 'Something went wrong. Please try again in a moment.';
+            container.setAttribute('data-state', 'error');
+            console.error('Signup error:', err);
+          }).then(function() {
+            submitBtn.disabled = false;
+          });
+        });
+      })();
+    })();
   </script>
 </body>
 </html>
