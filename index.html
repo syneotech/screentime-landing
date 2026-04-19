@@ -221,15 +221,37 @@
       font-weight: 500;
       letter-spacing: 0.02em;
     }
-    /* Screenshots carousel (hero) */
+    /* Screenshots carousel (hero, peek layout) */
     .screenshots-carousel {
       position: relative;
       margin-top: 16px;
       width: 100%;
-      max-width: 280px;
+      max-width: 560px;
       outline: none;
     }
     .screenshots-carousel:focus-visible { outline: none; }
+    .carousel-viewport {
+      overflow: hidden;
+      position: relative;
+      padding: 24px 0;
+    }
+    .carousel-track {
+      display: flex;
+      transition: transform 380ms cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform;
+    }
+    .slide {
+      flex: 0 0 72%;
+      padding: 0 6px;
+      box-sizing: border-box;
+      opacity: 0.32;
+      transform: scale(0.92);
+      transition: opacity 380ms ease, transform 380ms ease;
+    }
+    .slide.is-active {
+      opacity: 1;
+      transform: scale(1);
+    }
     .phone-frame {
       position: relative;
       background: var(--bg-card);
@@ -257,25 +279,7 @@
       z-index: 3;
       pointer-events: none;
     }
-    .carousel-viewport {
-      overflow: hidden;
-      height: 100%;
-      position: relative;
-    }
-    .carousel-track {
-      display: flex;
-      height: 100%;
-      transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
-      will-change: transform;
-    }
-    .slide {
-      position: relative;
-      flex: 0 0 100%;
-      height: 100%;
-      background: var(--bg-surface);
-      overflow: hidden;
-    }
-    .slide::before {
+    .phone-screen::before {
       content: attr(data-label);
       position: absolute;
       inset: 0;
@@ -289,7 +293,7 @@
       text-align: center;
       z-index: 0;
     }
-    .slide img {
+    .phone-screen img {
       position: relative;
       z-index: 1;
       width: 100%;
@@ -324,7 +328,7 @@
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      background: rgba(16, 34, 25, 0.85);
+      background: rgba(16, 34, 25, 0.9);
       border: 1px solid rgba(19, 236, 128, 0.25);
       color: var(--primary);
       cursor: pointer;
@@ -339,8 +343,8 @@
     .carousel-arrow:hover { background: rgba(19, 236, 128, 0.15); }
     .carousel-arrow:active { transform: translateY(-50%) scale(0.95); }
     .carousel-arrow[disabled] { opacity: 0.3; cursor: not-allowed; }
-    .carousel-arrow.prev { left: -20px; }
-    .carousel-arrow.next { right: -20px; }
+    .carousel-arrow.prev { left: 8px; }
+    .carousel-arrow.next { right: 8px; }
     .carousel-arrow svg {
       width: 18px;
       height: 18px;
@@ -757,9 +761,9 @@
         ScreenTime
       </a>
       <nav class="header-nav" aria-label="Primary">
+        <a href="#screenshots">Screenshots</a>
         <a href="#features">Features</a>
         <a href="#how-it-works">How it works</a>
-        <a href="#screenshots">Screenshots</a>
         <a href="#pricing">Pricing</a>
       </nav>
       <a href="#" class="btn-primary header-cta">Download for Android</a>
@@ -793,33 +797,48 @@
 
         <!-- Screenshots carousel -->
         <div class="screenshots-carousel" id="screenshots" tabindex="0" role="region" aria-roledescription="carousel" aria-label="App screenshots">
-          <div class="phone-frame">
-            <div class="phone-notch" aria-hidden="true"></div>
-            <div class="phone-screen">
-              <div class="carousel-viewport">
-                <div class="carousel-track">
-                  <div class="slide" data-label="Approved catalog" role="group" aria-roledescription="slide" aria-label="Approved catalog (1 of 4)">
+          <div class="carousel-viewport">
+            <div class="carousel-track">
+              <div class="slide is-active" role="group" aria-roledescription="slide" aria-label="Approved catalog (1 of 4)">
+                <div class="phone-frame">
+                  <div class="phone-notch" aria-hidden="true"></div>
+                  <div class="phone-screen" data-label="Approved catalog">
                     <img src="screenshots/01-catalog.png" alt="" onerror="this.remove()">
                   </div>
-                  <div class="slide" data-label="Daily time limits" role="group" aria-roledescription="slide" aria-label="Daily time limits (2 of 4)">
+                </div>
+              </div>
+              <div class="slide" role="group" aria-roledescription="slide" aria-label="Daily time limits (2 of 4)">
+                <div class="phone-frame">
+                  <div class="phone-notch" aria-hidden="true"></div>
+                  <div class="phone-screen" data-label="Daily time limits">
                     <img src="screenshots/02-time-limits.png" alt="" onerror="this.remove()">
                   </div>
-                  <div class="slide" data-label="Activity log" role="group" aria-roledescription="slide" aria-label="Activity log (3 of 4)">
+                </div>
+              </div>
+              <div class="slide" role="group" aria-roledescription="slide" aria-label="Activity log (3 of 4)">
+                <div class="phone-frame">
+                  <div class="phone-notch" aria-hidden="true"></div>
+                  <div class="phone-screen" data-label="Activity log">
                     <img src="screenshots/03-activity.png" alt="" onerror="this.remove()">
                   </div>
-                  <div class="slide" data-label="Kids mode" role="group" aria-roledescription="slide" aria-label="Kids mode (4 of 4)">
+                </div>
+              </div>
+              <div class="slide" role="group" aria-roledescription="slide" aria-label="Kids mode (4 of 4)">
+                <div class="phone-frame">
+                  <div class="phone-notch" aria-hidden="true"></div>
+                  <div class="phone-screen" data-label="Kids mode">
                     <img src="screenshots/04-kids-mode.png" alt="" onerror="this.remove()">
                   </div>
                 </div>
               </div>
             </div>
-            <button type="button" class="carousel-arrow prev" aria-label="Previous screenshot">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
-            </button>
-            <button type="button" class="carousel-arrow next" aria-label="Next screenshot">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
-            </button>
           </div>
+          <button type="button" class="carousel-arrow prev" aria-label="Previous screenshot">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button type="button" class="carousel-arrow next" aria-label="Next screenshot">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
           <div class="carousel-dots" role="tablist" aria-label="Screenshot navigation">
             <button type="button" class="carousel-dot active" role="tab" aria-label="Screenshot 1" aria-selected="true"></button>
             <button type="button" class="carousel-dot" role="tab" aria-label="Screenshot 2" aria-selected="false"></button>
@@ -1068,7 +1087,7 @@
         });
       });
 
-      // Screenshots carousel
+      // Screenshots carousel (peek layout: slide width 72%, centered active, 14% initial offset)
       (function initCarousel() {
         var carousel = document.getElementById('screenshots');
         if (!carousel) return;
@@ -1078,9 +1097,14 @@
         var prevBtn = carousel.querySelector('.carousel-arrow.prev');
         var nextBtn = carousel.querySelector('.carousel-arrow.next');
         var index = 0;
+        var SLIDE_PCT = 72;
+        var OFFSET_PCT = (100 - SLIDE_PCT) / 2; // 14
+
+        function trackOffsetPct() { return OFFSET_PCT - index * SLIDE_PCT; }
 
         function render() {
-          track.style.transform = 'translateX(' + (-index * 100) + '%)';
+          track.style.transform = 'translateX(' + trackOffsetPct() + '%)';
+          slides.forEach(function(s, i) { s.classList.toggle('is-active', i === index); });
           dots.forEach(function(d, i) {
             d.classList.toggle('active', i === index);
             d.setAttribute('aria-selected', i === index ? 'true' : 'false');
@@ -1111,7 +1135,7 @@
         track.addEventListener('touchmove', function(e) {
           if (!dragging) return;
           deltaX = e.touches[0].clientX - startX;
-          track.style.transform = 'translateX(calc(' + (-index * 100) + '% + ' + deltaX + 'px))';
+          track.style.transform = 'translateX(calc(' + trackOffsetPct() + '% + ' + deltaX + 'px))';
         }, { passive: true });
         track.addEventListener('touchend', function() {
           dragging = false;
