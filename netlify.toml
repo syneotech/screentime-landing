@@ -7,3 +7,8 @@
   from = "/tos"
   to   = "/tos.html"
   status = 200
+
+[[redirects]]
+  from = "/link-tv"
+  to   = "/link-tv.html"
+  status = 200

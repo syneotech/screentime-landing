@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>Link your TV — ScreenTime</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #102219;
+      --bg-card: #162E22;
+      --bg-surface: #1A3326;
+      --primary: #13EC80;
+      --primary-dark: #0FB863;
+      --text-primary: #FFFFFF;
+      --text-secondary: #8FA89B;
+      --text-muted: #5A7066;
+      --btn-text: #0D1F17;
+      --error: #FF6B6B;
+      --radius: 12px;
+      --font: 'Space Grotesk', system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: var(--bg-dark); color: var(--text-primary); font-family: var(--font); min-height: 100vh; }
+    body { display: flex; align-items: center; justify-content: center; padding: 24px; }
+    .card { background: var(--bg-card); border: 1px solid var(--bg-surface); border-radius: var(--radius); padding: 36px 32px; max-width: 460px; width: 100%; }
+    h1 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+    h1 span { color: var(--primary); }
+    p.subtitle { color: var(--text-secondary); margin-bottom: 24px; line-height: 1.55; }
+    .field { margin-bottom: 16px; }
+    label { display: block; font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; }
+    input { width: 100%; background: var(--bg-surface); color: var(--text-primary); border: 1px solid var(--bg-surface); border-radius: 8px; padding: 12px 14px; font-family: var(--font); font-size: 15px; outline: none; transition: border-color 0.15s; }
+    input:focus { border-color: var(--primary); }
+    input.code { font-size: 26px; letter-spacing: 6px; text-align: center; text-transform: uppercase; font-weight: 600; }
+    button { width: 100%; background: var(--primary); color: var(--btn-text); border: none; border-radius: 8px; padding: 14px; font-family: var(--font); font-weight: 600; font-size: 15px; cursor: pointer; transition: background 0.15s; }
+    button:hover:not(:disabled) { background: var(--primary-dark); }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    button.secondary { background: transparent; color: var(--text-primary); border: 1px solid var(--bg-surface); margin-top: 10px; }
+    button.secondary:hover:not(:disabled) { background: var(--bg-surface); }
+    .divider { display: flex; align-items: center; gap: 12px; margin: 18px 0; color: var(--text-muted); font-size: 12px; }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--bg-surface); }
+    .msg { padding: 12px 14px; border-radius: 8px; font-size: 14px; margin-bottom: 16px; line-height: 1.5; }
+    .msg.error { background: rgba(255,107,107,0.1); color: var(--error); border: 1px solid rgba(255,107,107,0.25); }
+    .msg.success { background: rgba(19,236,128,0.1); color: var(--primary); border: 1px solid rgba(19,236,128,0.25); }
+    .hidden { display: none; }
+    .footer { text-align: center; color: var(--text-muted); font-size: 12px; margin-top: 18px; }
+    .user-bar { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: var(--bg-surface); border-radius: 8px; margin-bottom: 18px; font-size: 13px; }
+    .user-bar .email { color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; }
+    .user-bar a { color: var(--primary); text-decoration: none; flex-shrink: 0; margin-left: 12px; }
+    .device { padding: 14px; background: var(--bg-surface); border-radius: 8px; margin-bottom: 16px; }
+    .device .label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .device .value { font-size: 16px; font-weight: 500; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Link your <span>TV</span></h1>
+    <p class="subtitle" id="subtitle">Sign in to your ScreenTime account, then enter the 6-character code shown on your TV.</p>
+
+    <div id="msg" class="msg hidden"></div>
+
+    <!-- LOGIN STEP -->
+    <div id="login-step">
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" type="email" autocomplete="email" placeholder="parent@example.com">
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" type="password" autocomplete="current-password" placeholder="Your password">
+      </div>
+      <button id="btn-login">Sign in</button>
+      <div class="divider">or</div>
+      <button id="btn-google" class="secondary">Continue with Google</button>
+    </div>
+
+    <!-- CODE STEP -->
+    <div id="code-step" class="hidden">
+      <div class="user-bar">
+        <span class="email" id="user-email"></span>
+        <a href="#" id="btn-signout">Sign out</a>
+      </div>
+      <div class="field">
+        <label for="code">Pairing code</label>
+        <input id="code" class="code" type="text" maxlength="6" autocomplete="off" autocapitalize="characters" placeholder="ABC123">
+      </div>
+      <button id="btn-lookup">Find TV</button>
+    </div>
+
+    <!-- CONFIRM STEP -->
+    <div id="confirm-step" class="hidden">
+      <div class="user-bar">
+        <span class="email" id="user-email-2"></span>
+        <a href="#" id="btn-signout-2">Sign out</a>
+      </div>
+      <div class="device">
+        <div class="label">Device</div>
+        <div class="value" id="device-label">—</div>
+      </div>
+      <p class="subtitle" style="font-size:14px;margin-bottom:14px">Linking will give this TV access to your child profiles and approved videos.</p>
+      <button id="btn-confirm">Link this TV</button>
+      <button id="btn-cancel" class="secondary">Cancel</button>
+    </div>
+
+    <!-- DONE STEP -->
+    <div id="done-step" class="hidden">
+      <div class="msg success" style="margin-bottom:0">
+        TV linked. Return to your TV — it should be loading the app now.
+      </div>
+    </div>
+
+    <div class="footer">screentime.syneo.tech</div>
+  </div>
+
+  <script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+    const SUPABASE_URL = 'https://rdyatkaazxjukjqljucr.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_AnIx7GcG4nS14mz3og2cSg_1sNVTcen';
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const els = {
+      login: document.getElementById('login-step'),
+      codeStep: document.getElementById('code-step'),
+      confirm: document.getElementById('confirm-step'),
+      done: document.getElementById('done-step'),
+      msg: document.getElementById('msg'),
+      email: document.getElementById('email'),
+      password: document.getElementById('password'),
+      btnLogin: document.getElementById('btn-login'),
+      btnGoogle: document.getElementById('btn-google'),
+      btnLookup: document.getElementById('btn-lookup'),
+      btnConfirm: document.getElementById('btn-confirm'),
+      btnCancel: document.getElementById('btn-cancel'),
+      btnSignout: document.getElementById('btn-signout'),
+      btnSignout2: document.getElementById('btn-signout-2'),
+      code: document.getElementById('code'),
+      userEmail: document.getElementById('user-email'),
+      userEmail2: document.getElementById('user-email-2'),
+      deviceLabel: document.getElementById('device-label'),
+    };
+
+    let pendingRow = null;
+
+    function show(step) {
+      ['login', 'codeStep', 'confirm', 'done'].forEach(k => els[k].classList.add('hidden'));
+      els[step].classList.remove('hidden');
+    }
+    function showMsg(text, kind = 'error') {
+      els.msg.textContent = text;
+      els.msg.className = `msg ${kind}`;
+    }
+    function clearMsg() { els.msg.className = 'msg hidden'; els.msg.textContent = ''; }
+    function setBusy(btn, busy, label) {
+      btn.disabled = busy;
+      if (label !== undefined) btn.textContent = label;
+    }
+
+    async function refreshSession() {
+      const { data } = await supabase.auth.getSession();
+      const session = data?.session;
+      if (session?.user?.email) {
+        els.userEmail.textContent = session.user.email;
+        els.userEmail2.textContent = session.user.email;
+        // If we already have a code in the URL (?code=ABC123), jump straight to lookup.
+        const urlCode = new URLSearchParams(window.location.search).get('code');
+        if (urlCode) {
+          els.code.value = urlCode.toUpperCase();
+        }
+        show('codeStep');
+      } else {
+        show('login');
+      }
+    }
+
+    els.btnLogin.addEventListener('click', async () => {
+      clearMsg();
+      const email = els.email.value.trim();
+      const password = els.password.value;
+      if (!email || !password) { showMsg('Email and password required.'); return; }
+      setBusy(els.btnLogin, true, 'Signing in…');
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      setBusy(els.btnLogin, false, 'Sign in');
+      if (error) { showMsg(error.message); return; }
+      refreshSession();
+    });
+
+    els.btnGoogle.addEventListener('click', async () => {
+      clearMsg();
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: window.location.origin + '/link-tv' },
+      });
+      if (error) showMsg(error.message);
+    });
+
+    async function signOut() {
+      await supabase.auth.signOut();
+      els.password.value = '';
+      pendingRow = null;
+      clearMsg();
+      refreshSession();
+    }
+    els.btnSignout.addEventListener('click', (e) => { e.preventDefault(); signOut(); });
+    els.btnSignout2.addEventListener('click', (e) => { e.preventDefault(); signOut(); });
+
+    els.btnLookup.addEventListener('click', async () => {
+      clearMsg();
+      const code = els.code.value.trim().toUpperCase();
+      if (!/^[A-Z0-9]{6}$/.test(code)) { showMsg('Code must be 6 letters or digits.'); return; }
+      setBusy(els.btnLookup, true, 'Finding…');
+      const { data, error } = await supabase
+        .from('tv_pairing_sessions')
+        .select('code, status, device_label, expires_at')
+        .eq('code', code)
+        .maybeSingle();
+      setBusy(els.btnLookup, false, 'Find TV');
+      if (error) { showMsg(error.message); return; }
+      if (!data) { showMsg('Code not found. Check the code on your TV and try again.'); return; }
+      if (data.status !== 'pending') { showMsg('This code has already been used.'); return; }
+      if (new Date(data.expires_at) <= new Date()) { showMsg('This code has expired. Generate a new one on your TV.'); return; }
+      pendingRow = data;
+      els.deviceLabel.textContent = data.device_label;
+      show('confirm');
+    });
+
+    els.btnConfirm.addEventListener('click', async () => {
+      if (!pendingRow) return;
+      clearMsg();
+      setBusy(els.btnConfirm, true, 'Linking…');
+      const { data: { session } } = await supabase.auth.getSession();
+      const { error } = await supabase
+        .from('tv_pairing_sessions')
+        .update({ status: 'claimed', parent_id: session.user.id, claimed_at: new Date().toISOString() })
+        .eq('code', pendingRow.code)
+        .eq('status', 'pending');
+      setBusy(els.btnConfirm, false, 'Link this TV');
+      if (error) { showMsg(error.message); return; }
+      show('done');
+    });
+
+    els.btnCancel.addEventListener('click', () => {
+      pendingRow = null;
+      els.code.value = '';
+      show('codeStep');
+    });
+
+    refreshSession();
+  </script>
+</body>
+</html>
